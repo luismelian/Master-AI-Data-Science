@@ -1,0 +1,2322 @@
+﻿{
+  "paragraphs": [
+    {
+      "text": "%md\nEste notebook contiene el enunciado del ejercicio para valorar el segundo bloque Spark.\nVamos a reutilizar parte del trabajo que se hizo para la evaluación del Bloque 1 RDDs.\nLos datos se han bajado de:\n\nhttp://samplecsvs.s3.amazonaws.com/Sacramentorealestatetransactions.csv\n\nLa parte que requiere algo más de trabajo es en la que se pide que se formatee una fecha. Así, se deberá generar una nueva colunma con el formato `YYYY-MM-DD`.\nPor ejemplo, a un registro que contiene una fecha como `Mon May 19 00:00:00 EDT 2008` se le deberá añadir una nueva colunma que contendrá `2008-05-19`.\n\n`Nota:` El directorio `/home/spark/zeppelin-0.9.0/spark-warehouse/csv_res` contiene un dataset con el resultado esperado. Se ha dejado el resultado en la VM para que podáis comprobar si vais bien o no, y por si alguien no pudo acabar el ejercicio 1. \n\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-16T10:15:15+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<p>Este notebook contiene el enunciado del ejercicio para valorar el segundo bloque Spark.<br />\nVamos a reutilizar parte del trabajo que se hizo para la evaluación del Bloque 1 RDDs.<br />\nLos datos se han bajado de:</p>\n<p><a href=\"http://samplecsvs.s3.amazonaws.com/Sacramentorealestatetransactions.csv\">http://samplecsvs.s3.amazonaws.com/Sacramentorealestatetransactions.csv</a></p>\n<p>La parte que requiere algo más de trabajo es en la que se pide que se formatee una fecha. Así, se deberá generar una nueva colunma con el formato <code>YYYY-MM-DD</code>.<br />\nPor ejemplo, a un registro que contiene una fecha como <code>Mon May 19 00:00:00 EDT 2008</code> se le deberá añadir una nueva colunma que contendrá <code>2008-05-19</code>.</p>\n<p><code>Nota:</code> El directorio <code>/home/spark/zeppelin-0.9.0/spark-warehouse/csv_res</code> contiene un dataset con el resultado esperado. Se ha dejado el resultado en la VM para que podáis comprobar si vais bien o no, y por si alguien no pudo acabar el ejercicio 1.</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115944_-162405472",
+      "id": "paragraph_1588440330865_-720269073",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "focus": true,
+      "$$hashKey": "object:8593"
+    },
+    {
+      "text": "%md\nCrea un DataFrame llamado csv con el fichero de datos original `Sacramentorealestatetransactions.csv`.\n",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-16T10:15:15+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<p>Crea un DataFrame llamado csv con el fichero de datos original <code>Sacramentorealestatetransactions.csv</code>.</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115944_-463352722",
+      "id": "paragraph_1588523081413_396387484",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8594"
+    },
+    {
+      "title": "Respuesta",
+      "text": "%spark.pyspark\n# DataFrame csvDF leyendo el archivo CSV\ncsvDF = spark.read.format(\"csv\") \\\n    .option(\"header\", \"true\") \\\n    .option(\"inferSchema\", \"true\") \\\n    .load(\"/tmp/Sacramentorealestatetransactions.csv\") \n\n# Mostrar las primeras filas para verificar\ncsvDF.show(5)\n\n# Mostrar el esquema para confirmar los tipos de datos\ncsvDF.printSchema()\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:24:43+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------------+----------+-----+-----+----+-----+------+-----------+--------------------+-------+---------+-----------+\n|         (street|      city|  zip|state|beds|baths|sq__ft|       type|           sale_date|  price| latitude|  longitude|\n+----------------+----------+-----+-----+----+-----+------+-----------+--------------------+-------+---------+-----------+\n|    3526 HIGH ST|SACRAMENTO|95838|   CA|   2|    1|   836|Residential|Wed May 21 00:00:...|59222.0|38.631913|-121.434879|\n|     51 OMAHA CT|SACRAMENTO|95823|   CA|   3|    1|  1167|Residential|Wed May 21 00:00:...|68212.0|38.478902|-121.431028|\n|  2796 BRANCH ST|SACRAMENTO|95815|   CA|   2|    1|   796|Residential|Wed May 21 00:00:...|68880.0|38.618305|-121.443839|\n|2805 JANETTE WAY|SACRAMENTO|95815|   CA|   2|    1|   852|Residential|Wed May 21 00:00:...|69307.0|38.616835|-121.439146|\n| 6001 MCMAHON DR|SACRAMENTO|95824|   CA|   2|    1|   797|Residential|Wed May 21 00:00:...|81900.0| 38.51947|-121.435768|\n+----------------+----------+-----+-----+----+-----+------+-----------+--------------------+-------+---------+-----------+\nonly showing top 5 rows\n\nroot\n |-- (street: string (nullable = true)\n |-- city: string (nullable = true)\n |-- zip: integer (nullable = true)\n |-- state: string (nullable = true)\n |-- beds: string (nullable = true)\n |-- baths: integer (nullable = true)\n |-- sq__ft: integer (nullable = true)\n |-- type: string (nullable = true)\n |-- sale_date: string (nullable = true)\n |-- price: double (nullable = true)\n |-- latitude: double (nullable = true)\n |-- longitude: string (nullable = true)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=77",
+              "$$hashKey": "object:10172"
+            },
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=78",
+              "$$hashKey": "object:10173"
+            },
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=79",
+              "$$hashKey": "object:10174"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115945_-1431705320",
+      "id": "paragraph_1588440432512_1953610962",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:24:43+0000",
+      "dateFinished": "2024-12-17T08:24:46+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8595"
+    },
+    {
+      "text": "%md\nTras ejecutar la celda anterior abre la consola gráfica de Spark: http://localhost:4040\n\nCuando has ejecutado la celda anterior, ¿se ha lanzado algún job?, ¿ocurre lo mismo que con el RDD del ejercicio 1?. Justifica este comportamiento.\nTip: Transformaciones vs acciones, comportamiento \"lazy\", ...",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-16T10:15:15+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<p>Tras ejecutar la celda anterior abre la consola gráfica de Spark: <a href=\"http://localhost:4040\">http://localhost:4040</a></p>\n<p>Cuando has ejecutado la celda anterior, ¿se ha lanzado algún job?, ¿ocurre lo mismo que con el RDD del ejercicio 1?. Justifica este comportamiento.<br />\nTip: Transformaciones vs acciones, comportamiento &ldquo;lazy&rdquo;, &hellip;</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115945_1347256812",
+      "id": "paragraph_1588523609717_-887540899",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8596"
+    },
+    {
+      "title": "Respuesta",
+      "text": "%md\nLas transformaciones como load() no ejecutan ningún trabajo de inmediato porque Spark utiliza evaluación perezosa. Esto significa que Spark espera hasta que se llama una acción, como show() o printSchema(), para optimizar y ejecutar todo el proceso de forma eficiente. Por eso, al ejecutar estas acciones, se lanza un job, que podemos ver reflejado en la consola gráfica de Spark (localhost:4040).",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:26:22+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115945_391107954",
+      "id": "paragraph_1588575138908_-797993943",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8597"
+    },
+    {
+      "text": "%md\nUtilizando el API de Spark Dataframe, muestra las 10 primeras líneas del DF. ",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:26:29+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<p>Utilizando el API de Spark Dataframe, muestra las 10 primeras líneas del RDD.</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115945_2077910716",
+      "id": "paragraph_1588523136543_1024624154",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8598"
+    },
+    {
+      "title": "Respuesta",
+      "text": "%spark.pyspark\r\n# 10 primeras líneas del DF en formato tabla\r\ncsvDF.show(10, truncate=False)",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:30:13+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------------------+--------------+-----+-----+----+-----+------+-----------+----------------------------+-------+---------+-----------+\n|(street                        |city          |zip  |state|beds|baths|sq__ft|type       |sale_date                   |price  |latitude |longitude  |\n+-------------------------------+--------------+-----+-----+----+-----+------+-----------+----------------------------+-------+---------+-----------+\n|3526 HIGH ST                   |SACRAMENTO    |95838|CA   |2   |1    |836   |Residential|Wed May 21 00:00:00 EDT 2008|59222.0|38.631913|-121.434879|\n|51 OMAHA CT                    |SACRAMENTO    |95823|CA   |3   |1    |1167  |Residential|Wed May 21 00:00:00 EDT 2008|68212.0|38.478902|-121.431028|\n|2796 BRANCH ST                 |SACRAMENTO    |95815|CA   |2   |1    |796   |Residential|Wed May 21 00:00:00 EDT 2008|68880.0|38.618305|-121.443839|\n|2805 JANETTE WAY               |SACRAMENTO    |95815|CA   |2   |1    |852   |Residential|Wed May 21 00:00:00 EDT 2008|69307.0|38.616835|-121.439146|\n|6001 MCMAHON DR                |SACRAMENTO    |95824|CA   |2   |1    |797   |Residential|Wed May 21 00:00:00 EDT 2008|81900.0|38.51947 |-121.435768|\n|5828 PEPPERMILL CT             |SACRAMENTO    |95841|CA   |3   |1    |1122  |Condo      |Wed May 21 00:00:00 EDT 2008|89921.0|38.662595|-121.327813|\n|6048 OGDEN NASH WAY            |SACRAMENTO    |95842|CA   |3   |2    |1104  |Residential|Wed May 21 00:00:00 EDT 2008|90895.0|38.681659|-121.351705|\n|2561 19TH AVE                  |SACRAMENTO    |95820|CA   |3   |1    |1177  |Residential|Wed May 21 00:00:00 EDT 2008|91002.0|38.535092|-121.481367|\n|11150 TRINITY RIVER DR Unit 114|RANCHO CORDOVA|95670|CA   |2   |2    |941   |Condo      |Wed May 21 00:00:00 EDT 2008|94905.0|38.621188|-121.270555|\n|7325 10TH ST                   |RIO LINDA     |95673|CA   |3   |2    |1146  |Residential|Wed May 21 00:00:00 EDT 2008|98937.0|38.700909|-121.442979|\n+-------------------------------+--------------+-----+-----+----+-----+------+-----------+----------------------------+-------+---------+-----------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=80",
+              "$$hashKey": "object:10378"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115945_1877420920",
+      "id": "paragraph_1588440492279_-80345469",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:26:55+0000",
+      "dateFinished": "2024-12-17T08:26:56+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8599"
+    },
+    {
+      "text": "%md\nTras ejecutar la celda anterior abre la consola gráfica de Spark: http://localhost:4040\n\nCuando has ejecutado la celda anterior, ¿se ha lanzado algún job?. Justifica este comportamiento.\nTip: Transformaciones vs acciones, comportamiento \"lazy\", ...\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-16T10:15:15+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "editorHide": false,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115945_-1607825470",
+      "id": "paragraph_1588525099404_220922244",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8600"
+    },
+    {
+      "title": "Respuesta",
+      "text": "%md\nCuando ejecutamos el código no ocurre nada visible al principio porque Spark no procesa los datos de inmediato. Lo que sucede es que Spark planifica todas las operaciones necesarias, pero no hace el trabajo hasta que le pedimos un resultado concreto, como mostrar las primeras filas con show(). En ese momento, Spark pone en marcha su maquinaria, ejecuta los cálculos y nos entrega el resultado. Esto lo podemos comprobar en la consola gráfica de Spark, donde se registran los jobs que se lanzan.",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:27:58+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115945_-256501882",
+      "id": "paragraph_1588576078711_763328751",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8601"
+    },
+    {
+      "text": "%md\nMuestra el Schema del DF csvDF",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-16T10:15:15+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_-1292632922",
+      "id": "paragraph_1588585628245_1665622091",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8602"
+    },
+    {
+      "title": "Respuesta",
+      "text": "%pyspark\n# Esquema del DataFrame csvDF\n\ncsvDF.printSchema()",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:27:58+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "root\n |-- (street: string (nullable = true)\n |-- city: string (nullable = true)\n |-- zip: integer (nullable = true)\n |-- state: string (nullable = true)\n |-- beds: string (nullable = true)\n |-- baths: integer (nullable = true)\n |-- sq__ft: integer (nullable = true)\n |-- type: string (nullable = true)\n |-- sale_date: string (nullable = true)\n |-- price: double (nullable = true)\n |-- latitude: double (nullable = true)\n |-- longitude: string (nullable = true)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_2044729279",
+      "id": "paragraph_1588585654577_1775941489",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:27:58+0000",
+      "dateFinished": "2024-12-17T08:27:58+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8603"
+    },
+    {
+      "text": "%md\nVuelve a crear el Dataframe csvDF pero esta vez infiereré tú el schema.\nTip: Primero que nada tienes que definir el schema con el StructType como hicimos en clase.\nhttps://spark.apache.org/docs/latest/sql-reference.html\n\nEl `sale_date` lo tienes que guardar como StringType() hasta que lo formateemos adecuadamente.\n\n\nesquema = ...\n\ncsvDF2 = ...",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-16T10:15:15+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<p>Vuelve a crear el Dataframe csvDF pero esta vez infiereré tú el schema.<br />\nTip: Primero que nada tienes que definir el schema con el StructType como hicimos en clase.<br />\n<a href=\"https://spark.apache.org/docs/latest/sql-reference.html\">https://spark.apache.org/docs/latest/sql-reference.html</a></p>\n<p>El <code>sale_date</code> lo tienes que guardar como StringType() hasta que lo formateemos adecuadamente.</p>\n<p>esquema = &hellip;</p>\n<p>csvDF2 = &hellip;</p>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_-1305464587",
+      "id": "paragraph_1588586673876_793751479",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8604"
+    },
+    {
+      "title": "Respuesta",
+      "text": "%spark.pyspark\nfrom pyspark.sql.types import StructType, StructField, StringType, IntegerType, DoubleType\n\n# Definición del esquema manualmente\nesquema = StructType([\n    StructField(\"street\", StringType(), True),\n    StructField(\"city\", StringType(), True),\n    StructField(\"zip\", IntegerType(), True),\n    StructField(\"state\", StringType(), True),\n    StructField(\"beds\", IntegerType(), True),\n    StructField(\"baths\", IntegerType(), True),\n    StructField(\"sq__ft\", IntegerType(), True),\n    StructField(\"type\", StringType(), True),\n    StructField(\"sale_date\", StringType(), True),  # Guardar como StringType para formatearlo después\n    StructField(\"price\", DoubleType(), True),\n    StructField(\"latitude\", DoubleType(), True),\n    StructField(\"longitude\", DoubleType(), True)\n])\n\n# Lectura del archivo CSV con el esquema definido\ncsvDF2 = spark.read.format(\"csv\") \\\n    .option(\"header\", \"true\") \\\n    .schema(esquema) \\\n    .load(\"/tmp/Sacramentorealestatetransactions.csv\")\n\n# Muestro los primeros registros y el esquema\ncsvDF2.show(5, truncate=False)\ncsvDF2.printSchema()",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:30:02+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------------+----------+-----+-----+----+-----+------+-----------+----------------------------+-------+---------+-----------+\n|street          |city      |zip  |state|beds|baths|sq__ft|type       |sale_date                   |price  |latitude |longitude  |\n+----------------+----------+-----+-----+----+-----+------+-----------+----------------------------+-------+---------+-----------+\n|3526 HIGH ST    |SACRAMENTO|95838|CA   |2   |1    |836   |Residential|Wed May 21 00:00:00 EDT 2008|59222.0|38.631913|-121.434879|\n|51 OMAHA CT     |SACRAMENTO|95823|CA   |3   |1    |1167  |Residential|Wed May 21 00:00:00 EDT 2008|68212.0|38.478902|-121.431028|\n|2796 BRANCH ST  |SACRAMENTO|95815|CA   |2   |1    |796   |Residential|Wed May 21 00:00:00 EDT 2008|68880.0|38.618305|-121.443839|\n|2805 JANETTE WAY|SACRAMENTO|95815|CA   |2   |1    |852   |Residential|Wed May 21 00:00:00 EDT 2008|69307.0|38.616835|-121.439146|\n|6001 MCMAHON DR |SACRAMENTO|95824|CA   |2   |1    |797   |Residential|Wed May 21 00:00:00 EDT 2008|81900.0|38.51947 |-121.435768|\n+----------------+----------+-----+-----+----+-----+------+-----------+----------------------------+-------+---------+-----------+\nonly showing top 5 rows\n\nroot\n |-- street: string (nullable = true)\n |-- city: string (nullable = true)\n |-- zip: integer (nullable = true)\n |-- state: string (nullable = true)\n |-- beds: integer (nullable = true)\n |-- baths: integer (nullable = true)\n |-- sq__ft: integer (nullable = true)\n |-- type: string (nullable = true)\n |-- sale_date: string (nullable = true)\n |-- price: double (nullable = true)\n |-- latitude: double (nullable = true)\n |-- longitude: double (nullable = true)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=81",
+              "$$hashKey": "object:10662"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_1922801753",
+      "id": "paragraph_1588586672323_-1310508169",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:28:07+0000",
+      "dateFinished": "2024-12-17T08:28:08+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8605"
+    },
+    {
+      "text": "%md\nCrea una vista temporar con el Dataframe anterior que se llame `csv_raw`.",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-16T10:15:15+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_-1394856044",
+      "id": "paragraph_1588603719101_-344208087",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8606"
+    },
+    {
+      "title": "Respuesta",
+      "text": "%spark.pyspark\r\n# Vista temporal llamada 'csv_raw'\r\ncsvDF2.createOrReplaceTempView(\"csv_raw\")",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:28:14+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_-1136783559",
+      "id": "paragraph_1588603721214_2053204990",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:28:14+0000",
+      "dateFinished": "2024-12-17T08:28:14+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8607"
+    },
+    {
+      "text": "%pyspark\nSelecciona de la tabla `csv_raw` el \"street\",\"beds\",\"baths\" y \"sq__ft\" de las 10 viviendas con más metros cuadrados (sq__ft) de tipo \"Residential\" de la ciudad de \"SACRAMENTO\".\nPara esta query tienes que utilizar tanto el API SQL (SELECT * FROM ...) como la DSL de PySpark (csvDF2.select)",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-16T10:15:15+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_-2053912665",
+      "id": "paragraph_1588603814086_-1704029741",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8608"
+    },
+    {
+      "title": "Respuesta: SQL",
+      "text": "%spark.sql\n\nSELECT street, beds, baths, sq__ft\nFROM csv_raw\nWHERE type = 'Residential' AND city = 'SACRAMENTO'\nORDER BY sq__ft DESC\nLIMIT 10",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:28:20+0000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "street": "string",
+                      "beds": "string",
+                      "baths": "string",
+                      "sq__ft": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                },
+                "pieChart": {}
+              },
+              "commonSetting": {},
+              "keys": [
+                {
+                  "name": "street",
+                  "index": 0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "values": [
+                {
+                  "name": "beds",
+                  "index": 1,
+                  "aggr": "sum"
+                }
+              ]
+            },
+            "helium": {}
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "street\tbeds\tbaths\tsq__ft\n3027 PALMATE WAY\t5\t3\t4246\n7756 TIGERWOODS DR\t5\t3\t3984\n5559 NORTHBOROUGH DR\t5\t3\t3881\n9880 IZILDA CT\t5\t4\t3863\n5579 JERRY LITELL WAY\t5\t3\t3599\n241 LANFRANCO CIR\t4\t4\t3397\n100 TOURMALINE CIR\t5\t3\t3076\n2064 EXPEDITION WAY\t4\t3\t3009\n26 JEANROSS CT\t5\t3\t2992\n3372 BERETANIA WAY\t4\t3\t2962\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=82",
+              "$$hashKey": "object:10886"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_-1754406719",
+      "id": "paragraph_1588603976646_-1713901881",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:28:20+0000",
+      "dateFinished": "2024-12-17T08:28:21+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8609"
+    },
+    {
+      "title": "Respuesta: API Dataframe",
+      "text": "%spark.pyspark\n\ncsvDF2.filter((csvDF2[\"type\"] == \"Residential\") & (csvDF2[\"city\"] == \"SACRAMENTO\")) \\\n    .select(\"street\", \"beds\", \"baths\", \"sq__ft\") \\\n    .orderBy(\"sq__ft\", ascending=False) \\\n    .limit(10) \\\n    .show(truncate=False)",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:28:27+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+---------------------+----+-----+------+\n|street               |beds|baths|sq__ft|\n+---------------------+----+-----+------+\n|3027 PALMATE WAY     |5   |3    |4246  |\n|7756 TIGERWOODS DR   |5   |3    |3984  |\n|5559 NORTHBOROUGH DR |5   |3    |3881  |\n|9880 IZILDA CT       |5   |4    |3863  |\n|5579 JERRY LITELL WAY|5   |3    |3599  |\n|241 LANFRANCO CIR    |4   |4    |3397  |\n|100 TOURMALINE CIR   |5   |3    |3076  |\n|2064 EXPEDITION WAY  |4   |3    |3009  |\n|26 JEANROSS CT       |5   |3    |2992  |\n|3372 BERETANIA WAY   |4   |3    |2962  |\n+---------------------+----+-----+------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=83",
+              "$$hashKey": "object:10944"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_-1969023317",
+      "id": "paragraph_1588603978812_-1557012668",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:28:27+0000",
+      "dateFinished": "2024-12-17T08:28:28+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8610"
+    },
+    {
+      "text": "%md\nCalcula el precio medio de las viviendas (sin ningún filtro) redondeando a 2 decimales (ver función ROUND) por cada código postal (zip).\nPara esta query tienes que utilizar tanto el API SQL (SELECT * FROM ...) como la DSL de PySpark (csvDF2.select)\n",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-16T10:15:15+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_-1902462048",
+      "id": "paragraph_1588605220610_1811864197",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8611"
+    },
+    {
+      "title": "Respuesta: SQL",
+      "text": "%spark.sql\n\nSELECT zip, ROUND(AVG(price), 2) AS avg_price\nFROM csv_raw\nWHERE zip IS NOT NULL --excluyo valores nulos\nGROUP BY zip\nORDER BY zip",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:28:34+0000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "title": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "zip": "string",
+                      "avg_price": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "zip\tavg_price\n95603\t405890.8\n95608\t295684.75\n95610\t226436.29\n95614\t300000.0\n95619\t216033.0\n95621\t177284.57\n95623\t247000.0\n95624\t250743.68\n95626\t132866.0\n95628\t303500.67\n95630\t414960.18\n95631\t194818.0\n95632\t236943.43\n95633\t490000.0\n95635\t395000.0\n95648\t96539.26\n95650\t567000.0\n95655\t237800.0\n95660\t135659.33\n95661\t360903.25\n95662\t279159.55\n95663\t506688.0\n95667\t363863.4\n95670\t236060.29\n95673\t172727.62\n95677\t430640.83\n95678\t269845.85\n95682\t268650.0\n95683\t223812.5\n95690\t380000.0\n95691\t170700.0\n95693\t617508.4\n95722\t230000.0\n95726\t240302.67\n95742\t350009.09\n95746\t678733.33\n95747\t364660.65\n95757\t338334.58\n95758\t231969.25\n95762\t491698.96\n95765\t355214.91\n95811\t403474.0\n95814\t367728.67\n95815\t115133.0\n95816\t348750.0\n95817\t151122.71\n95818\t283217.71\n95819\t465750.0\n95820\t143371.48\n95821\t228666.67\n95822\t157677.67\n95823\t175243.05\n95824\t114467.58\n95825\t189686.77\n95826\t181119.94\n95827\t204104.11\n95828\t184994.05\n95829\t294142.45\n95831\t313271.0\n95832\t175196.83\n95833\t198765.9\n95834\t248426.27\n95835\t276275.92\n95838\t149461.35\n95841\t213806.14\n95842\t143281.77\n95843\t232496.39\n95864\t364400.0\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=84",
+              "$$hashKey": "object:11084"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_1338526555",
+      "id": "paragraph_1588605302295_-1275862422",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:28:34+0000",
+      "dateFinished": "2024-12-17T08:28:37+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8612"
+    },
+    {
+      "title": "Respuesta: API Dataframe",
+      "text": "%spark.pyspark\r\nfrom pyspark.sql.functions import avg, round\r\n\r\n# Precio medio redondeado a 2 decimales por código postal\r\navg_price_per_zip = csvDF2.filter(csvDF2[\"zip\"].isNotNull()) \\\r\n    .groupBy(\"zip\") \\\r\n    .agg(round(avg(\"price\"), 2).alias(\"avg_price\")) \\\r\n    .orderBy(\"zip\")\r\n\r\n# Mostrar el resultado\r\navg_price_per_zip.show(truncate=False)\r\n",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:28:43+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-----+---------+\n|zip  |avg_price|\n+-----+---------+\n|95603|405890.8 |\n|95608|295684.75|\n|95610|226436.29|\n|95614|300000.0 |\n|95619|216033.0 |\n|95621|177284.57|\n|95623|247000.0 |\n|95624|250743.68|\n|95626|132866.0 |\n|95628|303500.67|\n|95630|414960.18|\n|95631|194818.0 |\n|95632|236943.43|\n|95633|490000.0 |\n|95635|395000.0 |\n|95648|96539.26 |\n|95650|567000.0 |\n|95655|237800.0 |\n|95660|135659.33|\n|95661|360903.25|\n+-----+---------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=85",
+              "$$hashKey": "object:11142"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_2141624248",
+      "id": "paragraph_1588605300403_972479522",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:28:43+0000",
+      "dateFinished": "2024-12-17T08:28:45+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8613"
+    },
+    {
+      "text": "%md\nSalva el nuevo dataframe (avg_price_per_zip) como una tabla con el nombre \"avg_price_per_zip\" usando la interfaz SaveAsTable.\n",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-16T10:15:15+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_793106096",
+      "id": "paragraph_1588607081023_72224600",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8614"
+    },
+    {
+      "title": "Respuesta",
+      "text": "%spark.pyspark\r\n# Guardar el DataFrame avg_price_per_zip como una tabla en Spark SQL\r\navg_price_per_zip.write.mode(\"overwrite\").saveAsTable(\"avg_price_per_zip\")\r\n\r\n# Verificar que la tabla se ha guardado correctamente\r\nspark.sql(\"SELECT * FROM avg_price_per_zip\").show(truncate=False)\r\n",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:28:53+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-----+---------+\n|zip  |avg_price|\n+-----+---------+\n|95624|250743.68|\n|95834|248426.27|\n|95814|367728.67|\n|95628|303500.67|\n|95667|363863.4 |\n|95833|198765.9 |\n|95821|228666.67|\n|95626|132866.0 |\n|95831|313271.0 |\n|95662|279159.55|\n|95655|237800.0 |\n|95825|189686.77|\n|95632|236943.43|\n|95633|490000.0 |\n|95742|350009.09|\n|95822|157677.67|\n|95832|175196.83|\n|95829|294142.45|\n|95635|395000.0 |\n|95619|216033.0 |\n+-----+---------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=86",
+              "$$hashKey": "object:11242"
+            },
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=87",
+              "$$hashKey": "object:11243"
+            },
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=88",
+              "$$hashKey": "object:11244"
+            },
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=89",
+              "$$hashKey": "object:11245"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_-1129778453",
+      "id": "paragraph_1588607294253_1324547666",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:28:53+0000",
+      "dateFinished": "2024-12-17T08:29:04+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8615"
+    },
+    {
+      "text": "%md\nSalva el nuevo dataframe (avg_price_per_zip) en formato JSON en el directorio `./data/eje01/avg_price_per_zip_json`.\nTIP: Si se generan muchos ficheros pequeños, antes de salvar haz un coalesce(3) sobre el Dataframe.\n",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-16T10:15:15+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_-116612663",
+      "id": "paragraph_1588607320301_-1306338880",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8616"
+    },
+    {
+      "title": "Respuesta",
+      "text": "%pyspark\n\navg_price_per_zip.coalesce(3) \\\n    .write.mode(\"overwrite\") \\\n    .json(\"./data/eje01/avg_price_per_zip_json\")",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:29:11+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=90",
+              "$$hashKey": "object:11347"
+            },
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=91",
+              "$$hashKey": "object:11348"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_525584673",
+      "id": "paragraph_1588607322707_1400422965",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:29:11+0000",
+      "dateFinished": "2024-12-17T08:29:16+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8617"
+    },
+    {
+      "text": "%md\nPartiendo del DF sobre el que has indicado el esquema (csvDF2), crea un nuevo DF sin las columnas 'latitude' y 'longitude'.\n",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-16T10:15:15+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115946_-542227133",
+      "id": "paragraph_1588578597529_-76614256",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8618"
+    },
+    {
+      "title": "Respuesta1",
+      "text": "%pyspark\n\n# Nuevo DataFrame excluyendo las columnas 'latitude' y 'longitude'\ncsvDFNoLatLon = csvDF2.select([col for col in csvDF2.columns if col not in [\"latitude\", \"longitude\"]])\n\n# Mostrar el nuevo DataFrame\ncsvDFNoLatLon.show(truncate=False)",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:29:51+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------------------+--------------+-----+-----+----+-----+------+-----------+----------------------------+--------+\n|street                         |city          |zip  |state|beds|baths|sq__ft|type       |sale_date                   |price   |\n+-------------------------------+--------------+-----+-----+----+-----+------+-----------+----------------------------+--------+\n|3526 HIGH ST                   |SACRAMENTO    |95838|CA   |2   |1    |836   |Residential|Wed May 21 00:00:00 EDT 2008|59222.0 |\n|51 OMAHA CT                    |SACRAMENTO    |95823|CA   |3   |1    |1167  |Residential|Wed May 21 00:00:00 EDT 2008|68212.0 |\n|2796 BRANCH ST                 |SACRAMENTO    |95815|CA   |2   |1    |796   |Residential|Wed May 21 00:00:00 EDT 2008|68880.0 |\n|2805 JANETTE WAY               |SACRAMENTO    |95815|CA   |2   |1    |852   |Residential|Wed May 21 00:00:00 EDT 2008|69307.0 |\n|6001 MCMAHON DR                |SACRAMENTO    |95824|CA   |2   |1    |797   |Residential|Wed May 21 00:00:00 EDT 2008|81900.0 |\n|5828 PEPPERMILL CT             |SACRAMENTO    |95841|CA   |3   |1    |1122  |Condo      |Wed May 21 00:00:00 EDT 2008|89921.0 |\n|6048 OGDEN NASH WAY            |SACRAMENTO    |95842|CA   |3   |2    |1104  |Residential|Wed May 21 00:00:00 EDT 2008|90895.0 |\n|2561 19TH AVE                  |SACRAMENTO    |95820|CA   |3   |1    |1177  |Residential|Wed May 21 00:00:00 EDT 2008|91002.0 |\n|11150 TRINITY RIVER DR Unit 114|RANCHO CORDOVA|95670|CA   |2   |2    |941   |Condo      |Wed May 21 00:00:00 EDT 2008|94905.0 |\n|7325 10TH ST                   |RIO LINDA     |95673|CA   |3   |2    |1146  |Residential|Wed May 21 00:00:00 EDT 2008|98937.0 |\n|645 MORRISON AVE               |SACRAMENTO    |95838|CA   |3   |2    |909   |Residential|Wed May 21 00:00:00 EDT 2008|100309.0|\n|4085 FAWN CIR                  |SACRAMENTO    |95823|CA   |3   |2    |1289  |Residential|Wed May 21 00:00:00 EDT 2008|106250.0|\n|2930 LA ROSA RD                |SACRAMENTO    |95815|CA   |1   |1    |871   |Residential|Wed May 21 00:00:00 EDT 2008|106852.0|\n|2113 KIRK WAY                  |SACRAMENTO    |95822|CA   |3   |1    |1020  |Residential|Wed May 21 00:00:00 EDT 2008|107502.0|\n|4533 LOCH HAVEN WAY            |SACRAMENTO    |95842|CA   |2   |2    |1022  |Residential|Wed May 21 00:00:00 EDT 2008|108750.0|\n|7340 HAMDEN PL                 |SACRAMENTO    |95842|CA   |2   |2    |1134  |Condo      |Wed May 21 00:00:00 EDT 2008|110700.0|\n|6715 6TH ST                    |RIO LINDA     |95673|CA   |2   |1    |844   |Residential|Wed May 21 00:00:00 EDT 2008|113263.0|\n|6236 LONGFORD DR Unit 1        |CITRUS HEIGHTS|95621|CA   |2   |1    |795   |Condo      |Wed May 21 00:00:00 EDT 2008|116250.0|\n|250 PERALTA AVE                |SACRAMENTO    |95833|CA   |2   |1    |588   |Residential|Wed May 21 00:00:00 EDT 2008|120000.0|\n|113 LEEWILL AVE                |RIO LINDA     |95673|CA   |3   |2    |1356  |Residential|Wed May 21 00:00:00 EDT 2008|121630.0|\n+-------------------------------+--------------+-----+-----+----+-----+------+-----------+----------------------------+--------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=93",
+              "$$hashKey": "object:11452"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115947_-128554055",
+      "id": "paragraph_1588442107201_-432980769",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:29:29+0000",
+      "dateFinished": "2024-12-17T08:29:29+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8619"
+    },
+    {
+      "title": "Respuesta2",
+      "text": "%pyspark\n\n# Nuevo DataFrame eliminando las columnas 'latitude' y 'longitude' usando drop\ncsvDFNoLatLon2 = csvDF2.drop(\"latitude\", \"longitude\")\n\n# Mostrar el resultado para verificar\ncsvDFNoLatLon2.show(truncate=False)",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:30:36+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------------------+--------------+-----+-----+----+-----+------+-----------+----------------------------+--------+\n|street                         |city          |zip  |state|beds|baths|sq__ft|type       |sale_date                   |price   |\n+-------------------------------+--------------+-----+-----+----+-----+------+-----------+----------------------------+--------+\n|3526 HIGH ST                   |SACRAMENTO    |95838|CA   |2   |1    |836   |Residential|Wed May 21 00:00:00 EDT 2008|59222.0 |\n|51 OMAHA CT                    |SACRAMENTO    |95823|CA   |3   |1    |1167  |Residential|Wed May 21 00:00:00 EDT 2008|68212.0 |\n|2796 BRANCH ST                 |SACRAMENTO    |95815|CA   |2   |1    |796   |Residential|Wed May 21 00:00:00 EDT 2008|68880.0 |\n|2805 JANETTE WAY               |SACRAMENTO    |95815|CA   |2   |1    |852   |Residential|Wed May 21 00:00:00 EDT 2008|69307.0 |\n|6001 MCMAHON DR                |SACRAMENTO    |95824|CA   |2   |1    |797   |Residential|Wed May 21 00:00:00 EDT 2008|81900.0 |\n|5828 PEPPERMILL CT             |SACRAMENTO    |95841|CA   |3   |1    |1122  |Condo      |Wed May 21 00:00:00 EDT 2008|89921.0 |\n|6048 OGDEN NASH WAY            |SACRAMENTO    |95842|CA   |3   |2    |1104  |Residential|Wed May 21 00:00:00 EDT 2008|90895.0 |\n|2561 19TH AVE                  |SACRAMENTO    |95820|CA   |3   |1    |1177  |Residential|Wed May 21 00:00:00 EDT 2008|91002.0 |\n|11150 TRINITY RIVER DR Unit 114|RANCHO CORDOVA|95670|CA   |2   |2    |941   |Condo      |Wed May 21 00:00:00 EDT 2008|94905.0 |\n|7325 10TH ST                   |RIO LINDA     |95673|CA   |3   |2    |1146  |Residential|Wed May 21 00:00:00 EDT 2008|98937.0 |\n|645 MORRISON AVE               |SACRAMENTO    |95838|CA   |3   |2    |909   |Residential|Wed May 21 00:00:00 EDT 2008|100309.0|\n|4085 FAWN CIR                  |SACRAMENTO    |95823|CA   |3   |2    |1289  |Residential|Wed May 21 00:00:00 EDT 2008|106250.0|\n|2930 LA ROSA RD                |SACRAMENTO    |95815|CA   |1   |1    |871   |Residential|Wed May 21 00:00:00 EDT 2008|106852.0|\n|2113 KIRK WAY                  |SACRAMENTO    |95822|CA   |3   |1    |1020  |Residential|Wed May 21 00:00:00 EDT 2008|107502.0|\n|4533 LOCH HAVEN WAY            |SACRAMENTO    |95842|CA   |2   |2    |1022  |Residential|Wed May 21 00:00:00 EDT 2008|108750.0|\n|7340 HAMDEN PL                 |SACRAMENTO    |95842|CA   |2   |2    |1134  |Condo      |Wed May 21 00:00:00 EDT 2008|110700.0|\n|6715 6TH ST                    |RIO LINDA     |95673|CA   |2   |1    |844   |Residential|Wed May 21 00:00:00 EDT 2008|113263.0|\n|6236 LONGFORD DR Unit 1        |CITRUS HEIGHTS|95621|CA   |2   |1    |795   |Condo      |Wed May 21 00:00:00 EDT 2008|116250.0|\n|250 PERALTA AVE                |SACRAMENTO    |95833|CA   |2   |1    |588   |Residential|Wed May 21 00:00:00 EDT 2008|120000.0|\n|113 LEEWILL AVE                |RIO LINDA     |95673|CA   |3   |2    |1356  |Residential|Wed May 21 00:00:00 EDT 2008|121630.0|\n+-------------------------------+--------------+-----+-----+----+-----+------+-----------+----------------------------+--------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=95",
+              "$$hashKey": "object:11510"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115947_-1946787489",
+      "id": "paragraph_1588441627795_1298407996",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:30:36+0000",
+      "dateFinished": "2024-12-17T08:30:36+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8620"
+    },
+    {
+      "text": "%md\nMuestra 10 elementos del nuevo Dataframe (sin Lat y Lon).\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-16T10:15:15+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115947_153223798",
+      "id": "paragraph_1588579200957_634706079",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8621"
+    },
+    {
+      "title": "Respuesta",
+      "text": "%pyspark\n\n# Mostrar los primeros 10 elementos del DataFrame sin 'latitude' y 'longitude'\ncsvDFNoLatLon.show(10, truncate=False)",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:30:41+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------------------+--------------+-----+-----+----+-----+------+-----------+----------------------------+-------+\n|street                         |city          |zip  |state|beds|baths|sq__ft|type       |sale_date                   |price  |\n+-------------------------------+--------------+-----+-----+----+-----+------+-----------+----------------------------+-------+\n|3526 HIGH ST                   |SACRAMENTO    |95838|CA   |2   |1    |836   |Residential|Wed May 21 00:00:00 EDT 2008|59222.0|\n|51 OMAHA CT                    |SACRAMENTO    |95823|CA   |3   |1    |1167  |Residential|Wed May 21 00:00:00 EDT 2008|68212.0|\n|2796 BRANCH ST                 |SACRAMENTO    |95815|CA   |2   |1    |796   |Residential|Wed May 21 00:00:00 EDT 2008|68880.0|\n|2805 JANETTE WAY               |SACRAMENTO    |95815|CA   |2   |1    |852   |Residential|Wed May 21 00:00:00 EDT 2008|69307.0|\n|6001 MCMAHON DR                |SACRAMENTO    |95824|CA   |2   |1    |797   |Residential|Wed May 21 00:00:00 EDT 2008|81900.0|\n|5828 PEPPERMILL CT             |SACRAMENTO    |95841|CA   |3   |1    |1122  |Condo      |Wed May 21 00:00:00 EDT 2008|89921.0|\n|6048 OGDEN NASH WAY            |SACRAMENTO    |95842|CA   |3   |2    |1104  |Residential|Wed May 21 00:00:00 EDT 2008|90895.0|\n|2561 19TH AVE                  |SACRAMENTO    |95820|CA   |3   |1    |1177  |Residential|Wed May 21 00:00:00 EDT 2008|91002.0|\n|11150 TRINITY RIVER DR Unit 114|RANCHO CORDOVA|95670|CA   |2   |2    |941   |Condo      |Wed May 21 00:00:00 EDT 2008|94905.0|\n|7325 10TH ST                   |RIO LINDA     |95673|CA   |3   |2    |1146  |Residential|Wed May 21 00:00:00 EDT 2008|98937.0|\n+-------------------------------+--------------+-----+-----+----+-----+------+-----------+----------------------------+-------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=96",
+              "$$hashKey": "object:11610"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115947_-2104685105",
+      "id": "paragraph_1588579227453_-432188653",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:30:41+0000",
+      "dateFinished": "2024-12-17T08:30:41+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8622"
+    },
+    {
+      "text": "%md \nSi observas la columna sale_date, ésta contiene una fecha:\n\n```python\ncsvDFNoLatLon.select(\"sale_date\").show(10, truncate = False)\n\n+----------------------------+\n|sale_date                   |\n+----------------------------+\n|Wed May 21 00:00:00 EDT 2008|\n|Wed May 21 00:00:00 EDT 2008|\n|Wed May 21 00:00:00 EDT 2008|\n|Wed May 21 00:00:00 EDT 2008|\n|Wed May 21 00:00:00 EDT 2008|\n|Wed May 21 00:00:00 EDT 2008|\n|Wed May 21 00:00:00 EDT 2008|\n|Wed May 21 00:00:00 EDT 2008|\n|Wed May 21 00:00:00 EDT 2008|\n|Wed May 21 00:00:00 EDT 2008|\n+----------------------------+\nonly showing top 10 rows\n\n```",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-16T10:15:15+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115947_90640019",
+      "id": "paragraph_1588579406068_-2137409",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8623"
+    },
+    {
+      "text": "%md\nCrea un nuevo proceso que mantenga la columna 8 tal y como está, y que añada una nueva columna con la fecha y hora en formato YYYY-MM-DD HH-mm-ss.\nPuedes utilizar:\n* La función que hiciste en el ejercicio 1: Para ello recuerda que puedes obtener el RDD del Dataframe con el método `df.rdd` o utilizar (mi recomendación) UDFs:\nhttps://docs.databricks.com/spark/latest/spark-sql/udf-python.html\n\n```python\nfrom pyspark.sql.functions import udf\nfrom pyspark.sql.types import StringType\n\nformatea_fecha_udf = udf(formatea_fecha, StringType())\n\ncsvDFNoLatLon.select(\"sale_date\",formatea_fecha_udf(\"sale_date\").alias(\"fecha_formatada\")).show(10, truncate = False)\n\n```\n\n\n* Utilizar la función `substring` y `concat`.\nhttps://spark.apache.org/docs/2.4.5/api/sql/index.html\n * `concat(cad1, cad2)`\n```python\nSELECT concat('Spark', 'SQL');\n SparkSQL\n```\n\n * `substring(str, pos[, len])`\n\n```python\n> SELECT substring('Spark SQL', 5);\n k SQL\n> SELECT substring('Spark SQL', -3);\n SQL\n> SELECT substring('Spark SQL', 5, 1);\n```\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-16T10:15:15+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<p>Crea un nuevo proceso que mantenga la columna 8 tal y como está, y que añada una nueva columna con la fecha y hora en formato YYYY-MM-DD HH-mm-ss.<br />\nPuedes utilizar:</p>\n<ul>\n<li>La función que hiciste en el ejercicio 1: Para ello recuerda que puedes obtener el RDD del Dataframe con el método <code>df.rdd</code> o utilizar (mi recomendación) UDFs:<br />\n<a href=\"https://docs.databricks.com/spark/latest/spark-sql/udf-python.html\">https://docs.databricks.com/spark/latest/spark-sql/udf-python.html</a></li>\n</ul>\n<pre><code class=\"language-python\">from pyspark.sql.functions import udf\nfrom pyspark.sql.types import StringType\n\nformatea_fecha_udf = udf(formatea_fecha, StringType())\n\ncsvDFNoLatLon.select(&quot;sale_date&quot;,formatea_fecha_udf(&quot;sale_date&quot;).alias(&quot;fecha_formatada&quot;)).show(10, truncate = False)\n\n</code></pre>\n<ul>\n<li>Utilizar la función <code>substring</code> y <code>concat</code>.<br />\n<a href=\"https://spark.apache.org/docs/2.4.5/api/sql/index.html\">https://spark.apache.org/docs/2.4.5/api/sql/index.html</a></li>\n<li><code>concat(cad1, cad2)</code></li>\n</ul>\n<pre><code class=\"language-python\">SELECT concat('Spark', 'SQL');\n SparkSQL\n</code></pre>\n<ul>\n<li><code>substring(str, pos[, len])</code></li>\n</ul>\n<pre><code class=\"language-python\">&gt; SELECT substring('Spark SQL', 5);\n k SQL\n&gt; SELECT substring('Spark SQL', -3);\n SQL\n&gt; SELECT substring('Spark SQL', 5, 1);\n</code></pre>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115947_836870449",
+      "id": "paragraph_1588440997272_-1312923454",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8624"
+    },
+    {
+      "title": "Respuesta1 : Usando formatea_fecha(fecha_texto)",
+      "text": "%pyspark\n\nfrom pyspark.sql.functions import udf\nfrom pyspark.sql.types import StringType\n\n# Diccionario para mapear nombres de meses a números\nmeses = {\n    \"Jan\": \"01\", \"Feb\": \"02\", \"Mar\": \"03\", \"Apr\": \"04\",\n    \"May\": \"05\", \"Jun\": \"06\", \"Jul\": \"07\", \"Aug\": \"08\",\n    \"Sep\": \"09\", \"Oct\": \"10\", \"Nov\": \"11\", \"Dec\": \"12\"\n}\n\ndef formatea_fecha(fecha_texto):\n    try:\n        partes = fecha_texto.split(\" \")\n        dia = partes[2]\n        mes = meses[partes[1]]\n        anio = partes[5]\n        hora = partes[3]\n        return f\"{anio}-{mes}-{dia} {hora}\"\n    except:\n        return \"Error\"\n\n# Registro de la UDF con el tipo de dato StringType\nformatea_fecha_udf = udf(formatea_fecha, StringType())\n\n# Nuevo DataFrame con la columna 'fecha_formateada'\ncsvDFNoLatLonConFecha = csvDFNoLatLon.withColumn(\n    \"fecha_formateada\", formatea_fecha_udf(\"sale_date\")\n)\n\ncsvDFNoLatLonConFecha.select(\"sale_date\", \"fecha_formateada\").show(10, truncate=False)\ncsvDFNoLatLonConFecha.printSchema()",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:31:39+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------------------------+-------------------+\n|sale_date                   |fecha_formateada   |\n+----------------------------+-------------------+\n|Wed May 21 00:00:00 EDT 2008|2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008|2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008|2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008|2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008|2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008|2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008|2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008|2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008|2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008|2008-05-21 00:00:00|\n+----------------------------+-------------------+\nonly showing top 10 rows\n\nroot\n |-- street: string (nullable = true)\n |-- city: string (nullable = true)\n |-- zip: integer (nullable = true)\n |-- state: string (nullable = true)\n |-- beds: integer (nullable = true)\n |-- baths: integer (nullable = true)\n |-- sq__ft: integer (nullable = true)\n |-- type: string (nullable = true)\n |-- sale_date: string (nullable = true)\n |-- price: double (nullable = true)\n |-- fecha_formateada: string (nullable = true)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=98",
+              "$$hashKey": "object:12695"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115947_-1608230911",
+      "id": "paragraph_1588500919467_-1651888839",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:31:39+0000",
+      "dateFinished": "2024-12-17T08:31:40+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8625"
+    },
+    {
+      "title": "Respuesta 2: Con funciones de SparkSql",
+      "text": "%pyspark\n\nfrom pyspark.sql.functions import col, substring, when, concat, lit\n\ncsvDFNoLatLon2 = csvDFNoLatLon.withColumn(\"sale_date_clean\", trim(regexp_replace(col(\"sale_date\"), \"EDT\", \"\")))\n\n\ncsvDFNoLatLon2 = csvDFNoLatLon2.select(\n    \"*\",  \n    concat(\n        substring(\"sale_date_clean\", 21, 5),  # Año\n        lit(\"-\"),\n        when(substring(\"sale_date_clean\", 5, 3) == \"Jan\", \"01\")\n        .when(substring(\"sale_date_clean\", 5, 3) == \"Feb\", \"02\")\n        .when(substring(\"sale_date_clean\", 5, 3) == \"Mar\", \"03\")\n        .when(substring(\"sale_date_clean\", 5, 3) == \"Apr\", \"04\")\n        .when(substring(\"sale_date_clean\", 5, 3) == \"May\", \"05\")\n        .when(substring(\"sale_date_clean\", 5, 3) == \"Jun\", \"06\")\n        .when(substring(\"sale_date_clean\", 5, 3) == \"Jul\", \"07\")\n        .when(substring(\"sale_date_clean\", 5, 3) == \"Aug\", \"08\")\n        .when(substring(\"sale_date_clean\", 5, 3) == \"Sep\", \"09\")\n        .when(substring(\"sale_date_clean\", 5, 3) == \"Oct\", \"10\")\n        .when(substring(\"sale_date_clean\", 5, 3) == \"Nov\", \"11\")\n        .when(substring(\"sale_date_clean\", 5, 3) == \"Dec\", \"12\")\n        .otherwise(\"00\"),\n        lit(\"-\"),\n        substring(\"sale_date_clean\", 9, 2),  # Día\n        lit(\" \"),\n        substring(\"sale_date_clean\", 12, 8)  # Hora\n    ).alias(\"fecha_formateada\")\n)\n\ncsvDFNoLatLon2.select(\"sale_date\", \"fecha_formateada\").show(10, truncate=False)",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:31:48+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------------------------+--------------------+\n|sale_date                   |fecha_formateada    |\n+----------------------------+--------------------+\n|Wed May 21 00:00:00 EDT 2008| 2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008| 2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008| 2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008| 2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008| 2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008| 2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008| 2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008| 2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008| 2008-05-21 00:00:00|\n|Wed May 21 00:00:00 EDT 2008| 2008-05-21 00:00:00|\n+----------------------------+--------------------+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=99",
+              "$$hashKey": "object:12752"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115947_-1279135701",
+      "id": "paragraph_1588595743637_2099270941",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:31:48+0000",
+      "dateFinished": "2024-12-17T08:31:49+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8626"
+    },
+    {
+      "text": "%pyspark\n\nfrom pyspark.sql.functions import col, when, substring\n\ncsvDFNoLatLon3 = csvDFNoLatLon2.withColumn(\n    \"mes\",\n    substring(\"sale_date_clean\", 5, 3)\n)\n\ncsvDFNoLatLon3 = csvDFNoLatLon3.select(\n    \"*\",\n    when(col(\"mes\") == \"Jan\", \"01\")\n    .when(col(\"mes\") == \"Feb\", \"02\")\n    .when(col(\"mes\") == \"Mar\", \"03\")\n    .when(col(\"mes\") == \"Apr\", \"04\")\n    .when(col(\"mes\") == \"May\", \"05\")\n    .when(col(\"mes\") == \"Jun\", \"06\")\n    .when(col(\"mes\") == \"Jul\", \"07\")\n    .when(col(\"mes\") == \"Aug\", \"08\")\n    .when(col(\"mes\") == \"Sep\", \"09\")\n    .when(col(\"mes\") == \"Oct\", \"10\")\n    .when(col(\"mes\") == \"Nov\", \"11\")\n    .when(col(\"mes\") == \"Dec\", \"12\")\n    .otherwise(\"00\") \n    .alias(\"mes_num\")\n)\n\ncsvDFNoLatLon3.select(\"sale_date\", \"mes\", \"mes_num\").show(truncate=False)",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:40:29+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------------------------+---+-------+\n|sale_date                   |mes|mes_num|\n+----------------------------+---+-------+\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n|Wed May 21 00:00:00 EDT 2008|May|05     |\n+----------------------------+---+-------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=105",
+              "$$hashKey": "object:13142"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115947_-337780664",
+      "id": "paragraph_1588598200901_667025659",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:40:21+0000",
+      "dateFinished": "2024-12-17T08:40:22+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8627"
+    },
+    {
+      "text": "%pyspark\n\ncsvDFNoLatLon3.createOrReplaceTempView(\"csv\")",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:40:30+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115947_-613119721",
+      "id": "paragraph_1588598403434_-1287105327",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:40:31+0000",
+      "dateFinished": "2024-12-17T08:40:31+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8628"
+    },
+    {
+      "text": "%md\nSi has realizado todos los pasos anteriores, las siguientes queries te deberían funcionar.\n",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-16T10:15:15+0000",
+      "config": {
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/text",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115947_-45361975",
+      "id": "paragraph_1594026368123_-1594936213",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "status": "READY",
+      "$$hashKey": "object:8629"
+    },
+    {
+      "text": "%spark.sql\n\nSELECT mes, mes_num FROM csv WHERE mes_num NOT IN (\"01\",\"02\",\"03\",\"04\",\"05\",\"06\",\"07\",\"08\",\"09\",\"10\",\"11\",\"12\")\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:40:36+0000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "mes": "string",
+                      "mes_num": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "mes\tmes_num\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=106",
+              "$$hashKey": "object:13197"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115947_1041753888",
+      "id": "paragraph_1588598734627_-1927635209",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:40:36+0000",
+      "dateFinished": "2024-12-17T08:40:36+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8630"
+    },
+    {
+      "text": "%pyspark\r\nfrom pyspark.sql.functions import col, to_date, concat, substring, when\r\n\r\ncsvDFNoLatLon2 = csvDFNoLatLon2.withColumn(\r\n    \"mes\", substring(\"sale_date_clean\", 5, 3)  \r\n)\r\n\r\ncsvDFNoLatLon3 = csvDFNoLatLon2.withColumn(\r\n    \"mes_num\",\r\n    when(col(\"mes\") == \"Jan\", \"01\").when(col(\"mes\") == \"Feb\", \"02\")\r\n    .when(col(\"mes\") == \"Mar\", \"03\").when(col(\"mes\") == \"Apr\", \"04\")\r\n    .when(col(\"mes\") == \"May\", \"05\").when(col(\"mes\") == \"Jun\", \"06\")\r\n    .when(col(\"mes\") == \"Jul\", \"07\").when(col(\"mes\") == \"Aug\", \"08\")\r\n    .when(col(\"mes\") == \"Sep\", \"09\").when(col(\"mes\") == \"Oct\", \"10\")\r\n    .when(col(\"mes\") == \"Nov\", \"11\").when(col(\"mes\") == \"Dec\", \"12\")\r\n)\r\n\r\ncsvDFNoLatLon3 = csvDFNoLatLon3.withColumn(\"anio\", trim(substring(\"sale_date_clean\", 21, 5)))\r\ncsvDFNoLatLon3 = csvDFNoLatLon3.withColumn(\"dia\", trim(substring(\"sale_date_clean\", 9, 2)))\r\n\r\n\r\ncsvDFNoLatLon4 = csvDFNoLatLon3.withColumn(\r\n    \"fecha\", to_date(concat(col(\"anio\"), col(\"mes_num\"), col(\"dia\")), \"yyyyMMdd\")\r\n)\r\n\r\ncsvDFNoLatLon4.select(\"sale_date_clean\", \"anio\", \"mes_num\", \"dia\", \"fecha\").show(truncate=False)",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:40:43+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------------+----+-------+---+----------+\n|sale_date_clean          |anio|mes_num|dia|fecha     |\n+-------------------------+----+-------+---+----------+\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n|Wed May 21 00:00:00  2008|2008|05     |21 |2008-05-21|\n+-------------------------+----+-------+---+----------+\nonly showing top 20 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=107",
+              "$$hashKey": "object:13557"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115947_-1690884051",
+      "id": "paragraph_1588598205384_618048580",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:40:43+0000",
+      "dateFinished": "2024-12-17T08:40:44+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8631"
+    },
+    {
+      "text": "%pyspark\ncsvDFNoLatLon4.createOrReplaceTempView(\"fecha\")",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:40:52+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115947_2110324527",
+      "id": "paragraph_1588598916772_522283793",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:40:52+0000",
+      "dateFinished": "2024-12-17T08:40:52+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8632"
+    },
+    {
+      "text": "%pyspark\n# El bucketBy reorganiza los ficheros en 10 \"cajones\" o buckets para city y los ordena. Esto mejorará mucho el rendimiento cuando nuestras consultas se agrupen por city o se hagan joins por este campo.\n\ncsvDFNoLatLon4.write.bucketBy(10, \"city\") \\\n    .sortBy(\"city\") \\\n    .mode(\"overwrite\") \\\n    .saveAsTable(\"csv_res\")",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:42:19+0000",
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=108",
+              "$$hashKey": "object:13642"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115947_578454392",
+      "id": "paragraph_1588600509680_-1525489614",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:42:05+0000",
+      "dateFinished": "2024-12-17T08:42:07+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8633"
+    },
+    {
+      "text": "%spark.sql\nSELECT count(*), city FROM fecha GROUP BY city\n\n",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:42:21+0000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "count(1)": "string",
+                      "city": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "count(1)\tcity\n10\tPLACERVILLE\n17\tROCKLIN\n20\tCARMICHAEL\n3\tRANCHO MURIETA\n114\tELK GROVE\n2\tEL DORADO\n439\tSACRAMENTO\n9\tCAMERON PARK\n13\tRIO LINDA\n1\tMEADOW VISTA\n4\tGOLD RIVER\n1\tSLOUGHHOUSE\n9\tFAIR OAKS\n3\tWEST SACRAMENTO\n21\tGALT\n1\tDIAMOND SPRINGS\n23\tEL DORADO HILLS\n1\tFORESTHILL\n28\tRANCHO CORDOVA\n5\tAUBURN\n5\tWILTON\n11\tORANGEVALE\n3\tGRANITE BAY\n1\tSHINGLE SPRINGS\n4\tELVERTA\n1\tPENRYN\n1\tWALNUT GROVE\n1\tMATHER\n72\tLINCOLN\n1\tGARDEN VALLEY\n1\tGREENWOOD\n2\tLOOMIS\n1\tCOOL\n33\tANTELOPE\n21\tNORTH HIGHLANDS\n17\tFOLSOM\n35\tCITRUS HEIGHTS\n3\tPOLLOCK PINES\n48\tROSEVILLE\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=109",
+              "$$hashKey": "object:13793"
+            },
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=110",
+              "$$hashKey": "object:13794"
+            },
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=111",
+              "$$hashKey": "object:13795"
+            },
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=112",
+              "$$hashKey": "object:13796"
+            },
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=113",
+              "$$hashKey": "object:13797"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115948_1306433171",
+      "id": "paragraph_1588598927045_-23552681",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:42:21+0000",
+      "dateFinished": "2024-12-17T08:42:23+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8634"
+    },
+    {
+      "text": "%spark.sql\nSELECT \n    city AS ciudad, \n    COUNT(*) AS registros\nFROM csv_res \nWHERE city IS NOT NULL\nGROUP BY city \nORDER BY city;",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:47:43+0000",
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sql",
+        "fontSize": 9,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "ciudad": "string",
+                      "registros": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "ciudad\tregistros\nANTELOPE\t33\nAUBURN\t5\nCAMERON PARK\t9\nCARMICHAEL\t20\nCITRUS HEIGHTS\t35\nCOOL\t1\nDIAMOND SPRINGS\t1\nEL DORADO\t2\nEL DORADO HILLS\t23\nELK GROVE\t114\nELVERTA\t4\nFAIR OAKS\t9\nFOLSOM\t17\nFORESTHILL\t1\nGALT\t21\nGARDEN VALLEY\t1\nGOLD RIVER\t4\nGRANITE BAY\t3\nGREENWOOD\t1\nLINCOLN\t72\nLOOMIS\t2\nMATHER\t1\nMEADOW VISTA\t1\nNORTH HIGHLANDS\t21\nORANGEVALE\t11\nPENRYN\t1\nPLACERVILLE\t10\nPOLLOCK PINES\t3\nRANCHO CORDOVA\t28\nRANCHO MURIETA\t3\nRIO LINDA\t13\nROCKLIN\t17\nROSEVILLE\t48\nSACRAMENTO\t438\nSHINGLE SPRINGS\t1\nSLOUGHHOUSE\t1\nWALNUT GROVE\t1\nWEST SACRAMENTO\t3\nWILTON\t5\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=119",
+              "$$hashKey": "object:17510"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734344115948_112890284",
+      "id": "paragraph_1588441392741_-1107749471",
+      "dateCreated": "2024-12-16T10:15:15+0000",
+      "dateStarted": "2024-12-17T08:47:43+0000",
+      "dateFinished": "2024-12-17T08:47:43+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8635"
+    },
+    {
+      "text": "%spark.sql\nSELECT \n    COUNT(DISTINCT city) AS ciudades_unicas\nFROM csv_res;",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:48:19+0000",
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "ciudades_unicas": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=121",
+              "$$hashKey": "object:18857"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734351234656_-892894400",
+      "id": "paragraph_1734351234656_-892894400",
+      "dateCreated": "2024-12-16T12:13:54+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:8636",
+      "dateFinished": "2024-12-17T08:48:19+0000",
+      "dateStarted": "2024-12-17T08:48:18+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "ciudades_unicas\n39\n"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%spark.sql\nSELECT \n    city AS nombre_ciudad, \n    COUNT(*) AS total_registros\nFROM csv_res\nWHERE city IS NOT NULL\nGROUP BY city \nORDER BY total_registros DESC\nLIMIT 5;",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:50:00+0000",
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "enabled": true,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "nombre_ciudad": "string",
+                      "total_registros": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          }
+        },
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://10.0.2.15:4040/jobs/job?id=122",
+              "$$hashKey": "object:19393"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734425285554_-919112914",
+      "id": "paragraph_1734425285554_-919112914",
+      "dateCreated": "2024-12-17T08:48:05+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:18118",
+      "dateFinished": "2024-12-17T08:50:00+0000",
+      "dateStarted": "2024-12-17T08:50:00+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "nombre_ciudad\ttotal_registros\nSACRAMENTO\t438\nELK GROVE\t114\nLINCOLN\t72\nROSEVILLE\t48\nCITRUS HEIGHTS\t35\n"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%spark.sql\n",
+      "user": "anonymous",
+      "dateUpdated": "2024-12-17T08:50:00+0000",
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/sql"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1734425400183_-826030040",
+      "id": "paragraph_1734425400183_-826030040",
+      "dateCreated": "2024-12-17T08:50:00+0000",
+      "status": "READY",
+      "focus": true,
+      "$$hashKey": "object:18874"
+    }
+  ],
+  "name": "Enunciado Test_Bloque2_SparkSQL_v01",
+  "id": "2KFDXYF7E",
+  "defaultInterpreterGroup": "spark",
+  "version": "0.9.0-preview1",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false,
+    "looknfeel": "default",
+    "personalizedMode": "false"
+  },
+  "info": {},
+  "path": "/Enunciado Test_Bloque2_SparkSQL_v01"
+}
